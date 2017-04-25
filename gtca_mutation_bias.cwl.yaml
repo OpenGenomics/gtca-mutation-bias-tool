@@ -1,0 +1,42 @@
+cwlVersion: v1.0
+class: CommandLineTool
+label: gtca-mutation-bias
+doc: |
+  Detects samples in a MAF with over-abundance of G>T mutations compared to C>A
+  mutations.
+    
+requirements:
+  DockerRequirement:    
+    dockerPull: "opengenomics/gtca-mutation-bias:latest"
+
+baseCommand: ["gtca_mutation_bias.py"]
+
+inputs:
+  maf_file:
+    type: File
+    doc: Input MAF file.
+    inputBinding:
+      position: 1
+
+  output_filename:
+    type: string
+    doc: Output filename.
+    inputBinding:
+      position: 2
+
+  filter_stats_filename:
+    type: string
+    doc: Filter stats name.
+    inputBinding:
+      position: 3
+
+outputs:
+  filter_stats:
+    type: File
+    outputBinding:
+      glob: $(inputs.filter_stats_filename)
+
+  out:
+    type: File
+    outputBinding:
+      glob: $(inputs.output_filename)
